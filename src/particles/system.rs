@@ -6,8 +6,14 @@ use crate::particles::{
 use macroquad::prelude::*;
 
 pub enum ParticleStyle {
-    Texture { texture: Texture2D, color: Color },
+    Texture {
+        texture: Texture2D,
+        color: Color,
+    },
+    /// Single color (keeps previous behavior). Particles will lerp to RED as they die.
     Color(Color),
+    /// Gradient from start color to end color over particle lifetime.
+    ColorGradient(Color, Color),
 }
 
 pub struct ParticleSystem {
@@ -80,7 +86,8 @@ impl ParticleSystem {
     pub fn draw(&self) {
         if let Some(style) = &self.style {
             match style {
-                ParticleStyle::Color(color) => self.draw_color_particles(color),
+                ParticleStyle::Color(color) => self.draw_color_particles(color, &RED),
+                ParticleStyle::ColorGradient(start, end) => self.draw_color_particles(start, end),
                 ParticleStyle::Texture { texture, color } => {
                     self.draw_texture_particles(texture, color)
                 }
@@ -88,17 +95,24 @@ impl ParticleSystem {
         }
     }
 
-    fn draw_color_particles(&self, color: &Color) {
+    fn draw_color_particles(&self, start_color: &Color, end_color: &Color) {
         // draw a small 3D cross for each particle so depth is visible
         for particle in &self.particles {
             let p = particle.position;
             let s = particle.size * 0.5;
+            // energy ranges from 1.0 -> 0.0; progress = 1 - energy
+            let t = (1.0 - particle.energy).clamp(0.0, 1.0);
+            let r = start_color.r + (end_color.r - start_color.r) * t;
+            let g = start_color.g + (end_color.g - start_color.g) * t;
+            let b = start_color.b + (end_color.b - start_color.b) * t;
+            let a = start_color.a + (end_color.a - start_color.a) * t;
+            let color = Color::new(r, g, b, a);
             // X axis line
-            draw_line_3d(p - vec3(s, 0.0, 0.0), p + vec3(s, 0.0, 0.0), *color);
+            draw_line_3d(p - vec3(s, 0.0, 0.0), p + vec3(s, 0.0, 0.0), color);
             // Y axis line
-            draw_line_3d(p - vec3(0.0, s, 0.0), p + vec3(0.0, s, 0.0), *color);
+            draw_line_3d(p - vec3(0.0, s, 0.0), p + vec3(0.0, s, 0.0), color);
             // Z axis line
-            draw_line_3d(p - vec3(0.0, 0.0, s), p + vec3(0.0, 0.0, s), *color);
+            draw_line_3d(p - vec3(0.0, 0.0, s), p + vec3(0.0, 0.0, s), color);
         }
     }
 
