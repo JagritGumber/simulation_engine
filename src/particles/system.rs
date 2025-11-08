@@ -16,6 +16,7 @@ pub struct ParticleSystem {
     particles: Vec<Particle>,
     bounding_box: Option<(Vec3, Vec3)>,
     emitter: Emitter,
+    spawn_per_update: usize,
 }
 
 impl ParticleSystem {
@@ -29,7 +30,14 @@ impl ParticleSystem {
             bounding_box: None,
             particles: vec![],
             style: None,
+            spawn_per_update: 2,
         }
+    }
+
+    /// Configure how many particles to spawn per update() call.
+    pub fn spawn_rate(mut self, per_update: usize) -> Self {
+        self.spawn_per_update = per_update;
+        self
     }
 
     pub fn point(mut self, position: Vec3, direction: Direction, spread: f32) -> Self {
@@ -117,7 +125,7 @@ impl ParticleSystem {
             particle.velocity.y -= 9.8 * delta; // gravity
         }
 
-        let new_particles = self.emitter.spawn(2);
+        let new_particles = self.emitter.spawn(self.spawn_per_update);
 
         self.particles.extend(new_particles);
 
