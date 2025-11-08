@@ -1,4 +1,8 @@
-use crate::particles::{emitter::Emitter, particle::Particle, utils::Direction};
+use crate::particles::{
+    emitter::Emitter,
+    particle::Particle,
+    utils::{Direction, Spawn},
+};
 use macroquad::prelude::*;
 
 pub enum ParticleStyle {
@@ -33,6 +37,24 @@ impl ParticleSystem {
             position,
             direction,
             spread,
+        };
+        self
+    }
+
+    pub fn cube(mut self, position: Vec3, size: f32, spawn_type: Spawn) -> Self {
+        self.emitter = Emitter::Cube {
+            position,
+            size,
+            spawn_type,
+        };
+        self
+    }
+
+    pub fn sphere(mut self, position: Vec3, size: f32, spawn_type: Spawn) -> Self {
+        self.emitter = Emitter::Sphere {
+            position,
+            size,
+            spawn_type,
         };
         self
     }
