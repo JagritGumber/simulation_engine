@@ -1,16 +1,13 @@
-use crate::particles::{
-    system::{ParticleStyle, ParticleSystem},
-    utils::Direction,
-};
+use crate::particles::{system::ParticleSystem, utils::Spawn};
 use macroquad::prelude::*;
 
 use super::{Scene, SceneName};
 
-pub struct PointEmitterScene {
+pub struct CubeEmitterScene {
     particle_system: Option<ParticleSystem>,
 }
 
-impl PointEmitterScene {
+impl CubeEmitterScene {
     pub fn new() -> Self {
         Self {
             particle_system: None,
@@ -18,22 +15,19 @@ impl PointEmitterScene {
     }
 }
 
-impl Scene for PointEmitterScene {
+impl Scene for CubeEmitterScene {
     fn start(&mut self) {
-        let style = ParticleStyle::Color(RED);
-        let bounding_box = (vec3(0.0, 0.0, 0.0), vec3(100.0, 100.0, 100.0));
+        let style = crate::particles::system::ParticleStyle::Color(GREEN);
+        let bounding_box = (vec3(-10.0, -10.0, -10.0), vec3(10.0, 10.0, 10.0));
 
         self.particle_system = Some(
             ParticleSystem::new()
-                .point(
-                    vec3(0.0, 0.0, 0.0),
-                    Direction::Fixed(vec3(0.0, 0.0, 0.2)),
-                    0.3,
-                )
+                .cube(vec3(0.0, 0.0, 0.0), 6.0, Spawn::Surface)
                 .style(style)
                 .bounding_box(bounding_box),
         );
     }
+
     fn stop(&mut self) {
         self.particle_system = None;
     }
