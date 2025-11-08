@@ -166,8 +166,8 @@ impl CameraController {
         let wheel = mouse_wheel().1;
         if wheel != 0.0 {
             // wheel > 0 means up -> zoom in; smaller multiplier for gentler zoom
-            let factor = 1.0 - wheel * 0.02;
-            self.distance = (self.distance * factor).clamp(1.0, 200.0);
+            let factor = 1.0 - wheel * 0.0008;
+            self.distance = (self.distance * factor).clamp(0.0, 200.0);
         }
     }
 
