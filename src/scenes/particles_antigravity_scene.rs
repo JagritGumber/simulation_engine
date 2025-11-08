@@ -3,24 +3,24 @@ use macroquad::{prelude::*, ui::root_ui};
 
 use super::{Scene, SceneName};
 
-pub struct MenuScene {
+pub struct ParticlesAntigravityScene {
     buttons: Vec<(SceneName, &'static str)>,
 }
 
-impl MenuScene {
+impl ParticlesAntigravityScene {
     pub fn new() -> Self {
         Self {
-            buttons: vec![(SceneName::ParticlesAntigravity, "Particles Antigravity")],
+            buttons: vec![(SceneName::MainMenu, "Start Simulation")],
         }
     }
 }
 
-impl Scene for MenuScene {
+impl Scene for ParticlesAntigravityScene {
     fn start(&mut self) {}
     fn stop(&mut self) {}
 
     fn update(&mut self) -> Option<SceneName> {
-        let screen_center_x = screen_width() / 2.0;
+        let screen_center_x = screen_width() / 2.0 - 50.0;
 
         for (scene_name, button_text) in &self.buttons {
             if Button::new(*button_text)

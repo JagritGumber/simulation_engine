@@ -12,6 +12,7 @@ async fn main() {
     loop {
         scene_manager.update().await;
         scene_manager.draw();
+
         next_frame().await;
     }
 }
