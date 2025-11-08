@@ -4,16 +4,18 @@ use crate::particles::{
 };
 use macroquad::prelude::*;
 
-use super::{Scene, SceneName};
+use super::{CameraController, Scene, SceneName};
 
 pub struct PointEmitterScene {
     particle_system: Option<ParticleSystem>,
+    camera: CameraController,
 }
 
 impl PointEmitterScene {
     pub fn new() -> Self {
         Self {
             particle_system: None,
+            camera: CameraController::new(vec3(0.0, 0.0, 0.0), 20.0),
         }
     }
 }
@@ -39,6 +41,9 @@ impl Scene for PointEmitterScene {
     }
 
     fn update(&mut self) -> Option<SceneName> {
+        // update camera from mouse
+        self.camera.update();
+
         let delta = get_frame_time();
         if let Some(system) = &mut self.particle_system {
             system.update(delta);
@@ -54,12 +59,11 @@ impl Scene for PointEmitterScene {
     fn draw(&self) {
         clear_background(WHITE);
 
-        set_camera(&Camera3D {
-            position: vec3(0.0, 0.0, 20.0),
-            target: vec3(0., 0., 0.),
-            up: vec3(0., 1., 0.),
-            ..Default::default()
-        });
+        // set the interactive camera
+        set_camera(&self.camera.camera());
+
+        // draw a simple wireframe floor/grid for 3D context
+        self.draw_room();
 
         if let Some(system) = &self.particle_system {
             system.draw();
