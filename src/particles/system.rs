@@ -81,14 +81,16 @@ impl ParticleSystem {
     }
 
     fn draw_color_particles(&self, color: &Color) {
+        // draw a small 3D cross for each particle so depth is visible
         for particle in &self.particles {
-            draw_rectangle(
-                particle.position.x - particle.size / 2.0,
-                particle.position.y - particle.size / 2.0,
-                particle.size,
-                particle.size,
-                *color,
-            );
+            let p = particle.position;
+            let s = particle.size * 0.5;
+            // X axis line
+            draw_line_3d(p - vec3(s, 0.0, 0.0), p + vec3(s, 0.0, 0.0), *color);
+            // Y axis line
+            draw_line_3d(p - vec3(0.0, s, 0.0), p + vec3(0.0, s, 0.0), *color);
+            // Z axis line
+            draw_line_3d(p - vec3(0.0, 0.0, s), p + vec3(0.0, 0.0, s), *color);
         }
     }
 
