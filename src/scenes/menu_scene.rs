@@ -14,6 +14,7 @@ impl MenuScene {
                 (SceneName::PointEmitter, "Point Emitter"),
                 (SceneName::CubeEmitter, "Cube Emitter"),
                 (SceneName::SphereEmitter, "Sphere Emitter"),
+                (SceneName::UnifiedEmitter, "Unified Emitter"),
             ],
         }
     }

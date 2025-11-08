@@ -2,6 +2,7 @@ mod cube_emitter_scene;
 mod menu_scene;
 mod point_emitter_scene;
 mod sphere_emitter_scene;
+mod unified_emitter_scene;
 
 use macroquad::prelude::*;
 
@@ -11,6 +12,7 @@ pub enum SceneName {
     PointEmitter,
     CubeEmitter,
     SphereEmitter,
+    UnifiedEmitter,
 }
 
 pub trait Scene {
@@ -85,6 +87,7 @@ pub fn create_scene(name: SceneName) -> Box<dyn Scene> {
         SceneName::PointEmitter => Box::new(point_emitter_scene::PointEmitterScene::new()),
         SceneName::CubeEmitter => Box::new(cube_emitter_scene::CubeEmitterScene::new()),
         SceneName::SphereEmitter => Box::new(sphere_emitter_scene::SphereEmitterScene::new()),
+        SceneName::UnifiedEmitter => Box::new(unified_emitter_scene::UnifiedEmitterScene::new()),
     }
 }
 
