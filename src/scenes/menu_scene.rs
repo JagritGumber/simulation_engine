@@ -10,7 +10,7 @@ pub struct MenuScene {
 impl MenuScene {
     pub fn new() -> Self {
         Self {
-            buttons: vec![(SceneName::ParticlesAntigravity, "Particles Antigravity")],
+            buttons: vec![(SceneName::PointEmitter, "Point Emitter")],
         }
     }
 }
