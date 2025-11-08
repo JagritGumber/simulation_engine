@@ -1,10 +1,10 @@
 mod menu_scene;
-mod particles_antigravity_scene;
+mod point_emitter_scene;
 
 #[derive(PartialEq, Clone, Copy)]
 pub enum SceneName {
     MainMenu,
-    ParticlesAntigravity,
+    PointEmitter,
 }
 
 pub trait Scene {
@@ -17,8 +17,6 @@ pub trait Scene {
 pub fn create_scene(name: SceneName) -> Box<dyn Scene> {
     match name {
         SceneName::MainMenu => Box::new(menu_scene::MenuScene::new()),
-        SceneName::ParticlesAntigravity => {
-            Box::new(particles_antigravity_scene::ParticlesAntigravityScene::new())
-        }
+        SceneName::PointEmitter => Box::new(point_emitter_scene::PointEmitterScene::new()),
     }
 }

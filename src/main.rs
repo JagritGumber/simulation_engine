@@ -1,3 +1,4 @@
+mod particles;
 mod scenes;
 mod utils;
 
